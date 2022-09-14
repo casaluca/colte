@@ -42,7 +42,7 @@ colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=True)
 colte,sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,/DR2,/csv
 ```
 -------------------------------------------------------
-5. Compute effective temperature for the metal poor benchmark stars from [here](https://ui.adsabs.harvard.edu/abs/2020A%26A...640A..25K/abstract), based on their Gaia DR3 photometry, and 2MASS if available
+5. Compute effective temperature for some notorious metal poor benchmark stars from [here](https://ui.adsabs.harvard.edu/abs/2020A%26A...640A..25K/abstract), based on their Gaia DR3 photometry, and 2MASS if available
 ```python
 colte('HD122563',1.40,-2.75,5.8750,6.3975,5.1787,-9,-9,-9,0.003,DR3=True,MC=True,eebv=0.01)
 ```
