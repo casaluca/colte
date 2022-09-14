@@ -41,3 +41,20 @@ colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=True)
 ```IDL
 colte,sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,/DR2,/csv
 ```
+-------------------------------------------------------
+5. Compute effective temperature for the metal poor benchmark stars from [here](https://ui.adsabs.harvard.edu/abs/2020A%26A...640A..25K/abstract), based on their Gaia DR3 photometry, and 2MASS if available
+```python
+colte('HD122563',1.40,-2.75,5.8750,6.3975,5.1787,-9,-9,-9,0.003,DR3=True,MC=True,eebv=0.01)
+```
+```IDL
+colte,'HD122563',1.40,-2.75,5.8750,6.3975,5.1787,-9,-9,-9,0.003,/DR3,/MC,eebv=0.01
+```
+will return from the only usable colour index BP-RP T<sub>eff</sub>=4678 ± 52 K, very close to the latest interferometric value ([4635 ± 34 K](https://ui.adsabs.harvard.edu/abs/2020A%26A...640A..25K/abstract)).
+```python
+colte('HD140283',3.65,-2.29,7.0360,7.3207,6.5618,6.014,5.696,5.588,0,DR3=True,MC=True)
+```
+```IDL
+colte,'HD140283',3.65,-2.29,7.0360,7.3207,6.5618,6.014,5.696,5.588,0,/DR3,/MC
+```
+will return the weighted averaged T<sub>eff</sub>=5785 ± 92 K, in excellent agreement with the latest interferometric value ([5792 ± 55 K](https://ui.adsabs.harvard.edu/abs/2020A%26A...640A..25K/abstract)).
+
