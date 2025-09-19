@@ -154,6 +154,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
  -Sept     2022 - Added scalar inputs and check on dimension of input data
                   Weighted sample standard error if sample size > 1, otherwise
                   standard deviation
+ -Sept     2025 - Removed deprecated NumPy APIs    
     '''
     import numpy as np
 
@@ -173,58 +174,58 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
     k2   = np.atleast_1d(k2)
     ebv  = np.atleast_1d(ebv)
     
-    if np.any(pmod)!=None:         
+    if pmod is not None:         
         ppm = np.atleast_1d(pmod)
     else:
         ppm = np.zeros(len(bp))
         
     bigone=[len(sid),len(logg),len(feh),len(gg),len(bp),len(rp),len(j2),len(h2),len(k2),len(ebv),len(ppm)]
         
-    if np.any(bprp_ex)!=None:         
+    if bprp_ex is not None:         
         bprp_ex = np.atleast_1d(bprp_ex)
         bigone.append(len(bprp_ex))
         
-    if np.any(elogg)!=None:
+    if elogg is not None:
         elogg = np.atleast_1d(elogg)
         bigone.append(len(elogg))
     else: elogg=[]
         
-    if np.any(efeh)!=None:
+    if efeh is not None:
         efeh  = np.atleast_1d(efeh)
         bigone.append(len(efeh))
     else: efeh=[]
         
-    if np.any(egg)!=None:
+    if egg is not None:
         egg   = np.atleast_1d(egg)
         bigone.append(len(egg))
     else: egg=[]
     
-    if np.any(ebp)!=None:
+    if ebp is not None:
         ebp   = np.atleast_1d(ebp)
         bigone.append(len(ebp))
     else: ebp=[]
         
-    if np.any(erp)!=None:
+    if erp is not None:
         erp   = np.atleast_1d(erp)
         bigone.append(len(erp))
     else: erp=[]
         
-    if np.any(ej2)!=None:
+    if ej2 is not None:
         ej2   = np.atleast_1d(ej2)
         bigone.append(len(ej2))
     else: ej2=[]
         
-    if np.any(eh2)!=None:
+    if eh2 is not None:
         eh2   = np.atleast_1d(eh2)
         bigone.append(len(eh2))
     else: eh2=[]
         
-    if np.any(ek2)!=None:
+    if ek2 is not None:
         ek2   = np.atleast_1d(ek2)
         bigone.append(len(ek2))
     else: ek2=[]
     
-    if np.any(eebv)!=None:
+    if eebv is not None:
         eebv  = np.atleast_1d(eebv)
         bigone.append(len(eebv))
     else: eebv=[]
@@ -232,9 +233,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
     check_len = all(elements==bigone[0] for elements in bigone)
     
     if not check_len:
-        print('Input quantities must all have the same number of elements')
-        print('Exiting now ... ')
-        raise SystemExit
+        raise ValueError('Input quantities must all have the same number of elements')
 
     # end dimension checks
     
@@ -251,7 +250,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
     if MC== False and len(ek2)>0:    print('WARNING: ek2 is used for quality cuts, but not to estimate Teff uncertainties since MC is not True')
 
     #write output file with results or logs
-    #Note: any existing output file will be updated
+    #Note: any existing output file will be overwritten
     if type(outfile)==str:
         f=open(outfile,'w')
     else: f=open('colte.csv','w')
@@ -316,7 +315,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
             cRh  =  0.567
             cRk  =  0.366
 
-        if np.any(bprp_ex)!=None:                                             
+        if bprp_ex is not None:                                             
             ok=np.where((np.isfinite(bp)==True) & (np.isfinite(rp)==True)      & \
                         (bp>=5) & (rp>=5) & (np.isfinite(ebv)==True)           & \
                         (np.isfinite(logg)==True) & (np.isfinite(feh)==True)   & \
@@ -372,7 +371,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
             cRh  =  0.567
             cRk  =  0.366
 
-        if np.any(bprp_ex)!=None:                                             
+        if bprp_ex is not None:                                             
             ok=np.where((np.isfinite(bp)==True) & (np.isfinite(rp)==True)      & \
                         (bp>=5) & (rp>=5) & (np.isfinite(ebv)==True)           & \
                         (np.isfinite(logg)==True) & (np.isfinite(feh)==True)   & \
@@ -393,15 +392,15 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
         
     if (ntot >=1 and data_track==0):
         sid0   = [str(i) for i in sid[ok]]
-        gg0    = np.asfarray(gg[ok])
-        bp0    = np.asfarray(bp[ok])
-        rp0    = np.asfarray(rp[ok])
-        j20    = np.asfarray(j2[ok])
-        h20    = np.asfarray(h2[ok])
-        k20    = np.asfarray(k2[ok])
-        ebv0   = np.asfarray(ebv[ok])
-        logg0  = np.asfarray(logg[ok])
-        feh0   = np.asfarray(feh[ok])
+        gg0    = np.asarray(gg[ok],dtype=float)
+        bp0    = np.asarray(bp[ok],dtype=float)
+        rp0    = np.asarray(rp[ok],dtype=float)
+        j20    = np.asarray(j2[ok],dtype=float)
+        h20    = np.asarray(h2[ok],dtype=float)
+        k20    = np.asarray(k2[ok],dtype=float)
+        ebv0   = np.asarray(ebv[ok],dtype=float)
+        logg0  = np.asarray(logg[ok],dtype=float)
+        feh0   = np.asarray(feh[ok],dtype=float)
 
         fatto=0
 
@@ -524,7 +523,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
         noh=np.where((h20<4.8)|(eh20>0.05)); nnoh=len(noh[0])
         nok=np.where((k20<4.2)|(ek20>0.05)); nnok=len(nok[0])
         if nnoj>=1: j20[noj]=float("nan")
-        if nnoj>=1: h20[noh]=float("nan")
+        if nnoh>=1: h20[noh]=float("nan")
         if nnok>=1: k20[nok]=float("nan")
         
         #compute colour dependent extinction coefficients
@@ -623,7 +622,7 @@ def colte(sid,logg,feh,gg,bp,rp,j2,h2,k2,ebv,DR2=False,DR3=False,bprp_ex=None,pm
                     #the overdispersion of the data wrt 1./sqrt(np.sum(wei))
                     #add 20K to account for zero-point uncertainty of Teff scale
                     if nav==1:
-                        wse = np.asscalar(eteff[nte])+20.
+                        wse = eteff[nte].item() + 20.
                     else:
                         wse = np.sqrt(np.sum(wei*(tca-wteff)*(tca-wteff))/np.sum(wei)) + 20.
                     
